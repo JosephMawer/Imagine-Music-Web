@@ -1,0 +1,52 @@
+﻿@page "/"
+
+@using ImagineMusic.Data
+@inject MusicStreamerService MusicStreamingService
+
+<PageTitle>Imagine Music</PageTitle>
+
+Feel free to live stream any of the audio files below!
+<br/>
+<br/>
+If you would like to download the tracks for yourself you can do so on an individual basis.
+
+@if (tracks == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table" style="margin-top:50px;">
+		<thead>
+			<tr>
+				<th>All Tracks...</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var track in tracks)
+			{
+				<tr>
+					<td style="padding: 25px 10px;">
+						@track.Title
+					</td>
+					<td>
+						<audio controls preload="auto">
+							@*https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3*@
+							<source src="" type="audio/mpeg">
+						</audio>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+@code {
+	private List<Track>? tracks;
+
+	protected override async Task OnInitializedAsync()
+	{
+		tracks = await MusicStreamingService.GetMusic();
+	}
+}
